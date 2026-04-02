@@ -561,7 +561,7 @@ if(recList.length > 0) renderRecChart(recList[0].ticker, 0);
 </body>
 </html>"""
 
-filename = "US_Quant_Master_V16_2.html"
+filename = "index.html"
 with open(filename, 'w', encoding='utf-8') as f:
     f.write(html_content)
 
