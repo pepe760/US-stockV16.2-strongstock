@@ -1,0 +1,40 @@
+name: Daily HK Quant Run
+
+on:
+  schedule:
+    # 這裡使用的是 UTC 時間。UTC 00:00 等於香港時間早上 08:00。
+    # 如果你想改在每天下午 5 點 (HKT) 執行，可以改成 '0 9 * * 1-5'
+    - cron: '0 0 * * *'
+  # 允許你隨時在網頁上手動點擊執行
+  workflow_dispatch: 
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 取得程式碼 (Checkout repo)
+      uses: actions/checkout@v4
+
+    - name: 設定 Python 環境
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 安裝所需套件 (Install dependencies)
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: 執行量化程式 (Run script)
+      run: python main.py
+
+    - name: 儲存並推送生成的 HTML 檔案 (Commit and Push)
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        # 將所有生成的 html 檔案加入追蹤
+        git add *.html
+        # 如果有新檔案就 commit，沒有就不做動作
+        git commit -m "🤖 自動生成每日 Quant Dashboard" || echo "No changes to commit"
+        git push
