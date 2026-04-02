@@ -31,6 +31,16 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions[bot]"
+          
+          # 1. Stage the file
           git add index.html
+          
+          # 2. Commit (only if there are changes)
           git commit -m "🤖 自動生成每日 Quant Dashboard" || echo "No changes to commit"
-          git push
+          
+          # 3. Pull latest changes to avoid "rejected" error
+          # --rebase ensures your new commit is added cleanly to the top
+          git pull --rebase origin main
+          
+          # 4. Push it back
+          git push origin main
