@@ -25,7 +25,7 @@ jobs:
           pip install yfinance pandas numpy tqdm requests lxml
 
       - name: Run Script
-        run: python your_script_name.py # Ensure this generates index.html
+        run: main.py # Ensure this generates index.html
 
       - name: Commit and Push
         run: |
